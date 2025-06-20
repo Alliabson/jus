@@ -23,11 +23,11 @@ except ImportError as e:
 API_KEY = None
 try:
     # Tenta carregar a chave do Streamlit Secrets (ideal para Streamlit Cloud)
-    API_KEY = st.secrets["AIzaSyCVuV01e2Klwf8qHgZXBTZrWkGt1qJ0Q0o"]
+    API_KEY = st.secrets["AIzaSyCoEkzxWiO-5UeFWXFEBRktKlJDSfFwDAc"]
 except KeyError:
     # Se não estiver em st.secrets, tenta carregar do arquivo .env (para execução local)
     load_dotenv() # Carrega as variáveis do arquivo .env
-    API_KEY = os.getenv("AIzaSyCVuV01e2Klwf8qHgZXBTZrWkGt1qJ0Q0o")
+    API_KEY = os.getenv("AIzaSyCoEkzxWiO-5UeFWXFEBRktKlJDSfFwDAc")
 
 if not API_KEY:
     st.error("Erro crítico: A chave da API do Google Gemini não foi encontrada.")
