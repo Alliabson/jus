@@ -19,25 +19,27 @@ except ImportError as e:
     st.info("Verifique se os arquivos nas pastas 'utils' e 'services' existem e se seus nomes estão corretos.")
     st.stop()
 
-# --- BLOCÔNICO DE CONFIGURAÇÃO DA CHAVE DE API (Corrigido) ---
+# --- BLOCÔNICO DE CONFIGURAÇÃO DA CHAVE DE API (Corrigido Definitivamente) ---
 API_KEY = None
 try:
     # Tenta carregar a chave do Streamlit Secrets (ideal para Streamlit Cloud)
+    # AQUI ACESSAMOS PELO NOME DA VARIÁVEL/SEGREDO: "GOOGLE_API_KEY"
     API_KEY = st.secrets["GOOGLE_API_KEY"]
 except KeyError:
     # Se não estiver em st.secrets, tenta carregar do arquivo .env (para execução local)
     load_dotenv() # Carrega as variáveis do arquivo .env
+    # AQUI TAMBÉM ACESSAMOS PELO NOME DA VARIÁVEL: "GOOGLE_API_KEY"
     API_KEY = os.getenv("GOOGLE_API_KEY")
 
 if not API_KEY:
     st.error("Erro crítico: A chave da API do Google Gemini não foi encontrada.")
     st.error("Por favor, configure-a corretamente:")
-    st.error("- **No Streamlit Cloud:** Vá em 'Manage app' -> 'Secrets' e adicione `GOOGLE_API_KEY=\"AIzaSyCoEkzxWiO-5UeFWXFEBRktKlJDSfFwDAc\"`")
-    st.error("- **Localmente:** Crie um arquivo `.env` na raiz do seu projeto com `GOOGLE_API_KEY=\"AIzaSyCoEkzxWiO-5UeFWXFEBRktKlJDSfFwDAc\"`")
+    # A MENSAGEM DE ERRO TAMBÉM DEVE USAR O NOME DA VARIÁVEL, NÃO O VALOR DA SUA CHAVE.
+    st.error("- **No Streamlit Cloud:** Vá em 'Manage app' -> 'Secrets' e adicione `GOOGLE_API_KEY=\"SUA_CHAVE_AQUI\"`")
+    st.error("- **Localmente:** Crie um arquivo `.env` na raiz do seu projeto com `GOOGLE_API_KEY=\"SUA_CHAVE_AQUI\"`")
     st.stop() # Interrompe a execução do Streamlit se a chave não for encontrada
 
 genai.configure(api_key=API_KEY)
-# Use 'gemini-1.5-flash' para maior agilidade e custo-benefício em protótipos
 model = genai.GenerativeModel('gemini-1.5-flash')
 # --- FIM DO BLOCÔNICO DE CONFIGURAÇÃO ---
 
