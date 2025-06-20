@@ -23,17 +23,17 @@ except ImportError as e:
 API_KEY = None
 try:
     # Tenta carregar a chave do Streamlit Secrets (ideal para Streamlit Cloud)
-    API_KEY = st.secrets["AIzaSyCoEkzxWiO-5UeFWXFEBRktKlJDSfFwDAc"]
+    API_KEY = st.secrets["GOOGLE_API_KEY"]
 except KeyError:
     # Se não estiver em st.secrets, tenta carregar do arquivo .env (para execução local)
     load_dotenv() # Carrega as variáveis do arquivo .env
-    API_KEY = os.getenv("AIzaSyCoEkzxWiO-5UeFWXFEBRktKlJDSfFwDAc")
+    API_KEY = os.getenv("GOOGLE_API_KEY")
 
 if not API_KEY:
     st.error("Erro crítico: A chave da API do Google Gemini não foi encontrada.")
     st.error("Por favor, configure-a corretamente:")
-    st.error("- **No Streamlit Cloud:** Vá em 'Manage app' -> 'Secrets' e adicione `GOOGLE_API_KEY=\"SUA_CHAVE_AQUI\"`")
-    st.error("- **Localmente:** Crie um arquivo `.env` na raiz do seu projeto com `GOOGLE_API_KEY=\"SUA_CHAVE_AQUI\"`")
+    st.error("- **No Streamlit Cloud:** Vá em 'Manage app' -> 'Secrets' e adicione `GOOGLE_API_KEY=\"AIzaSyCoEkzxWiO-5UeFWXFEBRktKlJDSfFwDAc\"`")
+    st.error("- **Localmente:** Crie um arquivo `.env` na raiz do seu projeto com `GOOGLE_API_KEY=\"AIzaSyCoEkzxWiO-5UeFWXFEBRktKlJDSfFwDAc\"`")
     st.stop() # Interrompe a execução do Streamlit se a chave não for encontrada
 
 genai.configure(api_key=API_KEY)
