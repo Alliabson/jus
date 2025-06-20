@@ -1,83 +1,119 @@
 # utils/legal_api.py
 
 import requests
-import json # Para pretty print do JSON, se necessário
+import json
+import os # Importar para usar os.getenv para chaves de APIs externas
 
-# ⚠️ IMPORTANTE: Esta URL é um EXEMPLO ILUSTRATIVO.
-# Você precisa pesquisar e usar a URL base e os endpoints da API real do tribunal que você escolher.
-# Por exemplo, para TJDFT, você precisaria procurar a documentação da "API de Jurisprudência do TJDFT".
-# Para o CNJ DataJud, seria outra URL e autenticação.
-TJDFT_JURISPRUDENCIA_API_BASE_URL = "https://example.com/api/tjdft/jurisprudencia" # <-- SUBSTITUA ESTE PELA URL REAL
+# ⚠️ IMPORTANTE: URL de API Real para BUSCA GERAL e ATUALIZADA.
+# Para uma busca GERAL ROBUSTA E COM EMENTAS COMPLETAS DE TODOS OS TJs,
+# uma API PAGA de Lawtech (como Jusbrasil API, Legal One, etc.) é ALTAMENTE RECOMENDADA.
+#
+# Se a intenção é buscar METADADOS GERAIS GRATUITOS (sem ementas completas diretas),
+# a API Pública do CNJ DataJud é a opção mais próxima.
+#
+# URL_API_JURISPRUDENCIA_GERAL = "https://api.nomedaapi.com/v1/jurisprudencia/geral" # Exemplo de Lawtech API
+# URL_API_CNJ_DATAJUD = "https://www.cnj.jus.br/datajud/api/v1/public" # Exemplo CNJ (metadados)
+
+# Por enquanto, mantenha este placeholder, ele NÃO FAZ REQUISIÇÃO REAL!
+# Ele serve apenas para indicar onde você colocaria a URL de uma API real no futuro.
+URL_API_REAL_PARA_FUTURO = "https://api.sua-api-juridica-geral-real.com/v1/busca"
+
 
 def fetch_jurisprudence(search_term: str, area: str = None) -> dict:
     """
-    Busca jurisprudência em uma API jurídica externa (ex: TJDFT ou similar).
+    Busca jurisprudência (simulada por enquanto) que representaria uma busca geral e atualizada.
 
     Args:
         search_term (str): O termo de busca (palavras-chave, número de processo, etc.).
-        area (str, optional): A área jurídica para filtrar (e.g., "Civil", "Criminal").
-                               Pode não ser suportado por todas as APIs.
+        area (str, optional): A área jurídica para filtrar (e.g., "Civil", "Criminal", "Previdenciário").
+                              Pode ser usado no mock ou em APIs reais que suportem.
 
     Returns:
-        dict: Um dicionário contendo os resultados da jurisprudência.
-              A estrutura dependerá da API real.
-
-    ⚠️ Esta função é um MOCK (simulação) de uma API real.
-    Você deve substituir a lógica interna pela chamada real à API escolhida.
-    A estrutura de retorno é mantida para compatibilidade com o seu mock inicial.
+        dict: Um dicionário contendo os resultados da jurisprudência simulada, formatados para o app.
+              Retorna {"error": "mensagem de erro", "resultados": []} em caso de falha.
     """
-    print(f"DEBUG: Buscando jurisprudência para '{search_term}' na área '{area}'...")
+    print(f"DEBUG: Buscando jurisprudência GERAL e ATUAL (simulado) para '{search_term}' na área '{area}'...")
 
     try:
         # --- LÓGICA DE CHAMADA À API REAL ---
-        # Exemplo hipotético de parâmetros para uma API de jurisprudência:
+        # ⚠️ PASSO 1: OBTENHA UMA CHAVE DE API, SE A API REAL EXIGIR.
+        # Configure-a como 'EXTERNAL_LEGAL_API_KEY' no Streamlit Secrets (Cloud) ou no seu .env (local).
+        # external_api_key = os.getenv("EXTERNAL_LEGAL_API_KEY")
+        # headers = {"Authorization": f"Bearer {external_api_key}"} if external_api_key else {}
+
+        # ⚠️ PASSO 2: CONFIGURE OS PARÂMETROS CONFORME A DOCUMENTAÇÃO DA SUA API REAL ESCOLHIDA!
+        # Estes são parâmetros genéricos. A API real terá os seus próprios nomes (ex: 'query', 'q', 'search').
         params = {
-            "q": search_term,         # Termo de consulta
-            "rows": 5,                # Limite de resultados
-            # "field_area": area,     # Se a API suportar filtro por área
-            # "api_key": os.getenv("EXTERNAL_LEGAL_API_KEY") # Se a API exigir uma chave
+            "query": search_term,
+            "limit": 3, # Limita o número de resultados para este exemplo
+            # "domain": area, # Se a API real permitir filtrar por área
+            # "sort_by": "date_desc", # Para buscar a mais atual (se a API real suportar)
         }
 
-        # Realiza a requisição HTTP GET
-        # response = requests.get(TJDFT_JURISPRUDENCIA_API_BASE_URL, params=params)
-        # response.raise_for_status() # Levanta um erro para códigos de status HTTP 4xx/5xx
-
-        # data = response.json()
+        # ⚠️ PASSO 3: DESCOMENTE AS LINHAS ABAIXO QUANDO TIVER A URL REAL E AUTENTICAÇÃO!
+        # response = requests.get(URL_API_REAL_PARA_FUTURO, headers=headers, params=params)
+        # response.raise_for_status() # Lança um erro para status de erro HTTP (4xx, 5xx)
+        # data = response.json() # Pega a resposta JSON da API real
+        # print(f"DEBUG: Resposta da API real recebida: {json.dumps(data, indent=2)}")
 
         # --- FIM DA LÓGICA DE CHAMADA À API REAL ---
 
 
-        # --- SIMULAÇÃO DE RESPOSTA DA API (ENQUANTO NÃO HÁ UMA REAL INTEGRADA) ---
-        # Mantenho o mock_data aqui para que o app.py possa continuar funcionando
-        # enquanto você não tiver uma API real para integrar de fato.
-        # REMOVA ISSO QUANDO A API REAL ESTIVER IMPLEMENTADA E TESTADA.
+        # --- CÓDIGO TEMPORÁRIO: MOCK DE RESPOSTA PARA BUSCA GERAL E ATUALIZADA ---
+        # Este mock simula resultados de diferentes TJs e com datas mais recentes.
         mock_data = {
             "termo": search_term,
             "area": area,
             "resultados": [
                 {
-                    "processo": f"AP {hash(search_term) % 1000000}-99.9999.999.9999",
-                    "relator": "Ministro IA Jurídica",
-                    "ementa": f"Jurisprudência simulada sobre {search_term}. Relevante para a área {area}.",
-                    "decisao": "Provido (simulado)"
+                    "processo": f"TJSP {hash(search_term) % 100000}-99.2024.8.26.0001",
+                    "relator": "Des. Maria Silva (TJSP)",
+                    "ementa": (
+                        f"**EMENTA ATUALIZADA (TJSP)**: Processo sobre **{search_term}** na área **{area}**. "
+                        "Jurisprudência recente de [mês/ano atual]. A decisão ressalta "
+                        "a interpretação contemporânea da matéria. Recurso conhecido e provido. (Acórdão de 15/05/2024)"
+                    ),
+                    "decisao": "Provido (Acórdão de 15/05/2024)"
+                },
+                {
+                    "processo": f"TJRJ {hash(search_term + 'a') % 100000}-99.2024.8.19.0001",
+                    "relator": "Des. João Santos (TJRJ)",
+                    "ementa": (
+                        f"**JURISPRUDÊNCIA RECENTE (TJRJ)**: Agravo de instrumento sobre **{search_term}** na área **{area}**. "
+                        "Decisão unânime. A Corte reiterou a aplicação da tese jurídica "
+                        "em casos análogos. Negado provimento. (Julgado em 01/06/2024)"
+                    ),
+                    "decisao": "Não Provido (Julgado em 01/06/2024)"
+                },
+                {
+                    "processo": f"TJMG {hash(search_term + 'b') % 100000}-99.2024.8.13.0001",
+                    "relator": "Des. Pedro Almeida (TJMG)",
+                    "ementa": (
+                        f"**PRECEDENTE ATUAL (TJMG)**: Apelação Cível em tema de **{search_term}** ({area}). "
+                        "Análise sobre [ponto específico]. A jurisprudência mineira tem se consolidado "
+                        "nesse sentido. Sentença mantida. (Data: 20/05/2024)"
+                    ),
+                    "decisao": "Sentença Mantida (Data: 20/05/2024)"
                 }
             ]
         }
         return mock_data
-        # --- FIM DA SIMULAÇÃO ---
+        # --- FIM DO CÓDIGO TEMPORÁRIO ---
+
 
         # ----------------------------------------------------------------------
-        # Quando você integrar uma API real:
-        # Você precisará mapear a resposta real da API para o formato que seu app espera.
-        # Exemplo (se a API retornar uma lista de documentos com 'processo', 'ementa', etc.):
+        # ⚠️ PASSO 4: QUANDO VOCÊ INTEGRAR UMA API REAL, VOCÊ VAI ADAPTAR ESTE BLOCO!
+        # Você precisará mapear a resposta real da API (a variável 'data' da requisição)
+        # para o formato que seu 'app.py' espera (com 'processo', 'relator', 'ementa', 'decisao').
+        #
         # processed_results = []
-        # if 'documents' in data:
-        #     for doc in data['documents']:
+        # if 'data' in data and 'jurisprudences' in data['data']: # Exemplo de estrutura de resposta de API real
+        #     for doc in data['data']['jurisprudences']:
         #         processed_results.append({
-        #             "processo": doc.get('numero_do_processo', 'N/A'),
+        #             "processo": doc.get('numero_processo_completo', 'N/A'), # Adapte para os nomes de campo da sua API real
         #             "relator": doc.get('nome_do_relator', 'N/A'),
-        #             "ementa": doc.get('texto_da_ementa', 'N/A'),
-        #             "decisao": doc.get('texto_da_decisao', 'N/A')
+        #             "ementa": doc.get('texto_da_ementa_completa', 'N/A'),
+        #             "decisao": doc.get('tipo_da_decisao_final', 'N/A')
         #         })
         # return {
         #     "termo": search_term,
@@ -87,7 +123,7 @@ def fetch_jurisprudence(search_term: str, area: str = None) -> dict:
         # ----------------------------------------------------------------------
 
     except requests.exceptions.RequestException as e:
-        print(f"ERRO: Erro ao conectar-se à API jurídica externa: {e}")
+        print(f"ERRO: Erro de conexão ou requisição com a API jurídica externa: {e}")
         return {"error": f"Erro de conexão com a API jurídica: {e}", "resultados": []}
     except json.JSONDecodeError:
         print(f"ERRO: Resposta inválida da API (não é JSON).")
