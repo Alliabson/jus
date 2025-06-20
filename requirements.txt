@@ -3,5 +3,5 @@ google-generativeai==0.3.2
 PyPDF2==3.0.1
 python-docx==0.8.11
 requests==2.31.0
-# python-multipart==0.0.6 # Esta biblioteca é para uploads de formulário, geralmente não é necessário instalar explicitamente para Streamlit.
-python-dotenv==1.0.0 # <-- ATUALIZE ESTA LINHA
+# python-multipart==0.0.6 # Esta linha pode ser removida se não for explicitamente necessária para outra parte do código que não seja o Streamlit em si.
+python-dotenv==1.0.0 # <-- ESTA LINHA FOI ATUALIZADA
