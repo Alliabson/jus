@@ -1,0 +1,26 @@
+# Dependências principais
+streamlit==1.32.2
+google-generativeai==0.3.2
+
+# Processamento de documentos
+PyPDF2==3.0.1
+python-docx==0.8.11
+pdfplumber==0.10.3  # Alternativa mais robusta para PDFs
+
+# Integrações jurídicas
+requests==2.31.0
+beautifulsoup4==4.12.3  # Para scraping de jurisprudência
+lxml==4.9.4  # Parser para HTML/XML
+
+# Gerenciamento de dados
+pandas==2.1.4
+numpy==1.26.3
+
+# Utilitários
+python-multipart==0.0.6
+python-dotenv==1.0.0  # Para gerenciar variáveis de ambiente
+tqdm==4.66.1  # Progress bars
+
+# Cache e performance
+cachetools==5.3.2
+redis==5.0.1  # Opcional para cache distribuído
