@@ -1,11 +1,6 @@
-# Core
 streamlit==1.32.2
 google-generativeai==0.3.2
-
-# Document Processing
 PyPDF2==3.0.1
 python-docx==0.8.11
-
-# Essentials
 requests==2.31.0
 python-multipart==0.0.6
